@@ -104,3 +104,40 @@ Once on the target host, we confirm the user `danny` has access to the docker so
 Follow the guide as it helps you create a new container with the host OS mounted. Due to the `chroot` command, the host OS appears as the root file system in the container.
 
 ## Task 10
+
+Task 10 demonstrates PID collisions, and walks you through an escape via PID 1. This is why we never run containers as root 🤯
+
+If you ever have root on a container, escapting to the host can be as simple as:
+```bash
+nsenter --target 1 --mount sh
+```
+
+There are no questions for this task.
+
+## Task 11
+
+This one took me a minute to understand. We're exploring using cgroups to copy the contents of a file into a new file in the container we're running in. Basically, we're creating a new executable that will run as root and execute the `cat > new file` command.
+
+You will get the flag by following the instructions exactly. You don't need to "Log into the new instance as root" as you're already there as root.
+
+## Task 12
+
+Summarizing lessons learned:
+1. Adhere to the principle of least privileges. Don't run processes as root inside your containers. It isn't like a VM, and root in the container can easily be escaped to root on the host.
+1. Docker uses "seccomp" to restrict what system calls can be made from a container.
+1. Secure your docker daemon.
+
+This task has no questions.
+
+## Task 13
+
+Tips and tricks on how to tell if you're in a container or if docker is running:
+1. How many processes can you see? If in a container it will be very few. If on a host or VM it will be many.
+1. Look for the presence of a `.dockerenv` file in the fs root. That's how docker passes environment variables to containers. If present, you're most likely in a container.
+1. List your "cgroups" with `cd /proc/1` then `cat cgroup`. If you see "/docker/" in the paths, you're in a container.
+
+This task has no questions.
+
+## Task 14
+
+This is the conclusion. This task has no questions.
